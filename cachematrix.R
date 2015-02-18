@@ -4,11 +4,8 @@
 ## Write a short comment describing this function
 
 ##  Apparently, this is based on the makeVector example, but I used solve() instead of mean().
-##  I still have problems when creating a matrix first (e.g. x <- matrix(...)) and creating 
-##  the special makeCacheMatrix object in a second step (e.g. x <- makeCacheMatrix(x)).
-##  However, the set of functions works, when the matrix is created in one step.
 ##  
-##  I used this example to verify the functionality:
+##  I used this example to verify the functionality (because I can verify it by hand):
 ##  > x <- makeCacheMatrix(matrix(c(1,2,2,3),2,2))
 ##  > cacheSolve(x)
 ##        [,1] [,2]
@@ -21,20 +18,25 @@
 ##  [2,]    2   -1
 ##
 ##
-##  PS: you can also try x <- makeCacheMatrix(matrix(rnorm(25),5,5)), but I don't want to verify the result by hand. ;)
+##
 
 
-
-makeCacheMatrix <- function(x = matrix()) {
-  inverse <- NULL
-  set <- function(y) {
-    x <<- y
-    inverse <<- NULL
+makeCacheMatrix <- function(x = matrix()) {		
+  inverse <- NULL												
+        ##delete any previously cached values in inverse
+  set <- function(y) {								
+    x <<- y														
+        ##set x outside of function scope
+    inverse <<- NULL											
+        ##delete inverse value globally outside of function scope
   }
   get <- function() x
-  setinverse <- function(solve) inverse <<- solve
-  getinverse <- function() inverse
-  list(set = set, get = get,
+  setinverse <- function(solve) inverse <<- solve	
+        ##globally set inverse matrix by assigning computated inverse matrix (see cacheSolve) to variable inverse
+  getinverse <- function() inverse						
+        ##return stored inverse matrix
+  list(set = set, get = get,								
+        ##list of method names allowing access via function$method in the form of name = method
        setinverse = setinverse,
        getinverse = getinverse)
 
@@ -44,14 +46,19 @@ makeCacheMatrix <- function(x = matrix()) {
 ## Write a short comment describing this function
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+        ##return a matrix that is the inverse of 'x'
   inverse <- x$getinverse()
+        ##assign variable inverse as output from makeCacheMatrix's method getinverse
   if(!is.null(inverse)) {
+        ##if inverse has been cached output message and return cached inverse matrix
     message("getting cached data")
     return(inverse)
   }
   data <- x$get()
+        ##otherwise get the matrix data
   inverse <- solve(data, ...)
+        ##calculate inverse via solve() and store in variable inverse
   x$setinverse(inverse)
+        ##and set global variable with setinverse method
   inverse
 }
