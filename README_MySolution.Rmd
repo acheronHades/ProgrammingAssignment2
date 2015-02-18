@@ -11,16 +11,27 @@ However, the set of functions works, when the matrix is created in one step.
 
 ## Example
 I used this example to verify the functionality:
+
 x <- makeCacheMatrix(matrix(c(1,2,2,3),2,2))
+
 cacheSolve(x)
+
       [,1] [,2]
+      
 [1,]   -3    2
+
 [2,]    2   -1
+
 cacheSolve(x)
+
 getting cached data
+
       [,1] [,2]
+      
 [1,]   -3    2
+
 [2,]    2   -1
+
 
 PS: you can also try x <- makeCacheMatrix(matrix(rnorm(25),5,5)), but I don't want to verify the result by hand. ;)
 
