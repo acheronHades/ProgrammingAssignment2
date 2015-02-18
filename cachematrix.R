@@ -18,7 +18,7 @@
 ##  [2,]    2   -1
 ##
 ##
-##
+## Thank you for your peer review. ;)
 
 
 makeCacheMatrix <- function(x = matrix()) {		
